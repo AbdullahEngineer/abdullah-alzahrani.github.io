@@ -1,0 +1,20 @@
+og.png — layout instructions (1200 x 630 px)
+
+Place the finished PNG next to index.html as /og.png (referenced by og:image and twitter:image).
+
+Canvas: 1200x630, dark backdrop (#04060c base, subtle cyan/violet radial glow top-left and bottom-right,
+matching the site's --cyan #22e6ff and --violet #8b5cf6 accents).
+
+Composition:
+1. Left-aligned text block, vertically centered, ~80px left margin:
+   - "Abdullah A. Alzahrani" — large, bold (Sora 800), white/#eaf0ff, ~64px
+   - "IT Infrastructure & Systems Engineer" — below it, medium weight, cyan (#22e6ff), ~30px
+   - "abdullah-alzahrani.github.io" — small, muted gray (#94a1bf), JetBrains Mono, ~20px, near bottom-left
+2. Right side: a minimalist vector line-art globe/wireframe sphere (thin cyan/violet strokes,
+   node-and-line network style matching the hero canvas), roughly 420px wide, vertically centered,
+   bleeding slightly off the right edge for a cinematic crop.
+3. Optional: a faint grid pattern or scanline texture in the background for the "ops dashboard" feel,
+   kept subtle so text stays readable.
+4. Keep a safe margin of ~60px on all sides so the globe and text aren't clipped by social-platform crops.
+
+Export as PNG, sRGB, no alpha needed (solid dark background), optimized for file size (<300KB if possible).
