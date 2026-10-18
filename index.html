@@ -106,7 +106,7 @@
   }
 
   *,*::before,*::after{ box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; max-width:100%; }
   @media (prefers-reduced-motion: reduce){
     html{ scroll-behavior:auto; }
   }
@@ -942,10 +942,11 @@
       </div>
 
       <div class="form-wrap">
-        <form id="contactForm" action="https://formsubmit.co/ajax/abdullah.ce07@gmail.com" method="POST">
+        <form id="contactForm" action="https://formsubmit.co/abdullah.ce07@gmail.com" method="POST">
           <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off">
           <input type="hidden" name="_subject" value="New portfolio message — abdullahengineer.github.io">
           <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_next" value="https://abdullahengineer.github.io/abdullah-alzahrani.github.io/?sent=1#contact">
           <input type="hidden" name="_template" value="table">
 
           <div class="field">
@@ -1186,7 +1187,7 @@
     });
   });
 
-  /* ---------- Contact form (FormSubmit AJAX) ---------- */
+  /* ---------- Contact form (FormSubmit, native POST) ---------- */
   var form = document.getElementById('contactForm');
   var submitBtn = document.getElementById('submitBtn');
   var formMsg = document.getElementById('formMsg');
@@ -1199,46 +1200,20 @@
     setTimeout(function(){ toast.classList.remove('show'); }, 3600);
   }
   form.addEventListener('submit', function(e){
-    e.preventDefault();
-    var honey = form.querySelector('[name="_honey"]').value;
-    if(honey){ return; } /* silently drop bots */
+    if(form.querySelector('[name="_honey"]').value){ e.preventDefault(); return; } /* drop bots */
     submitBtn.disabled = true;
-    var originalText = submitBtn.textContent;
     submitBtn.textContent = 'Sending...';
-    formMsg.textContent = '';
     formMsg.className = '';
-
-    var data = new FormData(form);
-    var payload = {};
-    data.forEach(function(v,k){ payload[k] = v; });
-
-    var ajaxUrl = form.getAttribute('action').replace('https://formsubmit.co/','https://formsubmit.co/ajax/');
-    fetch(ajaxUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    }).then(function(res){
-      return res.json().catch(function(){ return {}; }).then(function(d){
-        var ok = res.ok && d && (d.success === true || d.success === 'true');
-        if(!ok){ var err = new Error((d && d.message) || 'Request failed'); err.detail = d; throw err; }
-        return d;
-      });
-    }).then(function(){
-      formMsg.textContent = 'Message sent — thank you!';
-      formMsg.className = 'ok';
-      showToast('Message sent successfully.', true);
-      form.reset();
-    }).catch(function(err){
-      if(window.console) console.warn('Contact form error:', err && err.message);
-      var why = String((err && err.message) || 'unknown').slice(0,90);
-      formMsg.textContent = (/activat/i.test(why) ? 'Form is not activated yet. ' : 'Could not send (' + why + '). ') + 'Please email me directly.';
-      formMsg.className = 'err';
-      showToast('Could not send message.', false);
-    }).finally(function(){
-      submitBtn.disabled = false;
-      submitBtn.textContent = originalText;
-    });
+    formMsg.textContent = 'Sending…';
+    /* the browser posts the form to FormSubmit, which redirects back here with ?sent=1 */
   });
+  window.addEventListener('pageshow', function(){ submitBtn.disabled = false; submitBtn.textContent = 'Send message'; });
+  if(/[?&]sent=1/.test(location.search)){
+    formMsg.textContent = 'Message sent — thank you!';
+    formMsg.className = 'ok';
+    showToast('Message sent successfully.', true);
+    try{ history.replaceState(null, '', location.pathname + '#contact'); }catch(e){}
+  }
 
   /* ---------- Footer year ---------- */
   document.getElementById('year').textContent = new Date().getFullYear();
