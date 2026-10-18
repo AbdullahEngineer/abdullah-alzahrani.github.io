@@ -1230,7 +1230,8 @@
       form.reset();
     }).catch(function(err){
       if(window.console) console.warn('Contact form error:', err && err.message);
-      formMsg.textContent = (err && /activat/i.test(err.message||'')) ? 'Form is not activated yet. Please email me directly.' : 'Something went wrong. Please email me directly.';
+      var why = String((err && err.message) || 'unknown').slice(0,90);
+      formMsg.textContent = (/activat/i.test(why) ? 'Form is not activated yet. ' : 'Could not send (' + why + '). ') + 'Please email me directly.';
       formMsg.className = 'err';
       showToast('Could not send message.', false);
     }).finally(function(){
