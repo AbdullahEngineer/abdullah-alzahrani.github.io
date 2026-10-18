@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://abdullah-alzahrani.github.io/sitemap.xml
+Sitemap: https://abdullahengineer.github.io/abdullah-alzahrani.github.io/sitemap.xml
