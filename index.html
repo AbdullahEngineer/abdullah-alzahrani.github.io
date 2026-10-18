@@ -940,31 +940,32 @@
           <a href="https://abdullahengineer.github.io/abdullah-alzahrani.github.io/" target="_blank" rel="noopener noreferrer">abdullahengineer.github.io/abdullah-alzahrani.github.io</a>
         </div>
       </div>
-<div class="form-wrap">
-  <form id="contactForm" action="https://formsubmit.co/abdullah.ce07@gmail.com" method="POST" target="_blank">
-    <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off">
-    <input type="hidden" name="_subject" value="New portfolio message — abdullahengineer.github.io">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_template" value="table">
 
-    <div class="field">
-      <label for="fName">Name</label>
-      <input type="text" id="fName" name="name" required maxlength="80" autocomplete="name">
-    </div>
-    <div class="field">
-      <label for="fEmail">Email</label>
-      <input type="email" id="fEmail" name="email" required autocomplete="email">
-    </div>
-    <div class="field">
-      <label for="fMsg">Message</label>
-      <textarea id="fMsg" name="message" required maxlength="2000"></textarea>
-    </div>
-    <div class="submit-row">
-      <button type="submit" class="btn btn-primary" id="submitBtn">Send message</button>
-      <span id="formMsg" role="status" aria-live="polite"></span>
-    </div>
-  </form>
-</div>
+      <div class="form-wrap">
+        <form id="contactForm" action="https://formsubmit.co/ajax/abdullah.ce07@gmail.com" method="POST">
+          <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="_subject" value="New portfolio message — abdullahengineer.github.io">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+
+          <div class="field">
+            <label for="fName">Name</label>
+            <input type="text" id="fName" name="name" required maxlength="80" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="fEmail">Email</label>
+            <input type="email" id="fEmail" name="email" required autocomplete="email">
+          </div>
+          <div class="field">
+            <label for="fMsg">Message</label>
+            <textarea id="fMsg" name="message" required maxlength="2000"></textarea>
+          </div>
+          <div class="submit-row">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Send message</button>
+            <span id="formMsg" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
     </div>
   </section>
 </main>
@@ -1211,7 +1212,8 @@
     var payload = {};
     data.forEach(function(v,k){ payload[k] = v; });
 
-    fetch(form.action, {
+    var ajaxUrl = form.getAttribute('action').replace('https://formsubmit.co/','https://formsubmit.co/ajax/');
+    fetch(ajaxUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
@@ -1228,7 +1230,7 @@
       form.reset();
     }).catch(function(err){
       if(window.console) console.warn('Contact form error:', err && err.message);
-      formMsg.textContent = 'Something went wrong. Please email me directly.';
+      formMsg.textContent = (err && /activat/i.test(err.message||'')) ? 'Form is not activated yet. Please email me directly.' : 'Something went wrong. Please email me directly.';
       formMsg.className = 'err';
       showToast('Could not send message.', false);
     }).finally(function(){
@@ -1442,6 +1444,6 @@
 </script>
 
 <!-- Privacy-friendly analytics -->
-<script data-goatcounter="https://abdullahengineer.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://abdullahengineer.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
